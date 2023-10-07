@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../../../db/index.js";
+import sequelize from "../../../../db/index.js";
 
 const Workshop = sequelize.define(
   "Workshop",
@@ -8,17 +8,17 @@ const Workshop = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    duration_in_hours: {
-      type: DataTypes.INTEGER,
+    price: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
-    slots: {
+    duration_in_hours: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
     trainer_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: "Trainer",
         key: "id",

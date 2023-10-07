@@ -5,12 +5,12 @@ import chalk from "chalk";
 
 const { port } = environment;
 
+app.listen(port, () => {
+  console.log(chalk.blue(`Server listening on http://localhost:${port}`));
+});
+
 try {
-  app.listen(port, () => {
-    console.log(chalk.blue(`Server listening on http://localhost:${port}`));
-  });
   await sequelize.authenticate();
-  console.log(chalk.green("Successfully connected to database"));
 } catch (error: unknown) {
-  console.log(chalk.red("Error connecting to database:"), error);
+  console.error("Unable to connect to the database:", error);
 }

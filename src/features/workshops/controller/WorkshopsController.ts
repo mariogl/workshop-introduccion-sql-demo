@@ -1,7 +1,6 @@
 import { type Request, type Response } from "express";
-import { type Model } from "sequelize";
 import { type WorkShopStructure } from "../types";
-import Workshop from "../model/Workshop.js";
+import Workshop from "../model/Workshop/Workshop.js";
 
 class WorkShopController {
   public async getAll(req: Request, res: Response): Promise<void> {
@@ -41,7 +40,7 @@ class WorkShopController {
     try {
       const workshopId = req.params.id;
 
-      const workshop = await Workshop.findByPk(workshopId);
+      const workshop = undefined;
 
       if (!workshop) {
         res.status(404).json({ msg: "Workshop not found" });
@@ -66,9 +65,7 @@ class WorkShopController {
     try {
       const newWorkshopData = req.body;
 
-      const newWorkshop = await Workshop.create<Model<WorkShopStructure>>(
-        newWorkshopData
-      );
+      const newWorkshop = undefined;
 
       res.status(201).json({ workshop: newWorkshop });
     } catch (error) {
@@ -88,15 +85,6 @@ class WorkShopController {
     try {
       const workshop = req.body;
 
-      const [updatedWorkshops] = await Workshop.update(workshop, {
-        where: { id: workshop.id },
-      });
-
-      if (updatedWorkshops === 0) {
-        res.status(404).json({ msg: "Workshop not found" });
-        return;
-      }
-
       res.status(200).json({ workshop });
     } catch (error) {
       console.error(error);
@@ -114,15 +102,6 @@ class WorkShopController {
   ): Promise<void> {
     try {
       const workshopId = req.params.id;
-
-      const workshopsDeleted = await Workshop.destroy({
-        where: { id: workshopId },
-      });
-
-      if (workshopsDeleted === 0) {
-        res.status(404).json({ msg: "Workshop not found" });
-        return;
-      }
 
       res.status(200).json({ msg: "Workshop deleted" });
     } catch (error) {

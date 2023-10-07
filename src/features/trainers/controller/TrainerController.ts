@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
-import { type Model } from "sequelize";
 import { type TrainerStructure } from "../types";
-import Trainer from "../model/Trainer.js";
+import Trainer from "../model/Trainer/Trainer.js";
+import { type Model } from "sequelize";
 
 class TrainerController {
   public async getAll(req: Request, res: Response): Promise<void> {
@@ -51,25 +51,11 @@ class TrainerController {
     try {
       const newTrainerData = req.body;
 
-      const existingUser = await Trainer.findOne({
-        where: { username: newTrainerData.username },
-      });
-
-      if (existingUser) {
-        res.status(409).json({ msg: "Username already exists" });
-        return;
-      }
-
       const newTrainer = await Trainer.create<Model<TrainerStructure>>(
         newTrainerData
       );
 
-      const createdTrainerData: Partial<TrainerStructure> =
-        newTrainer.dataValues;
-
-      delete createdTrainerData.password;
-
-      res.status(201).json({ trainer: createdTrainerData });
+      res.status(201).json({ trainer: newTrainer });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Server Error" });
@@ -96,9 +82,9 @@ class TrainerController {
         return;
       }
 
-      delete (trainer as Partial<TrainerStructure>).password;
+      const { password, ...rest } = trainer;
 
-      res.status(200).json({ trainer });
+      res.status(200).json({ trainer: rest });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Server Error" });
@@ -116,11 +102,11 @@ class TrainerController {
     try {
       const trainerId = req.params.id;
 
-      const trainersDeleted = await Trainer.destroy({
+      const deletedTrainers = await Trainer.destroy({
         where: { id: trainerId },
       });
 
-      if (trainersDeleted === 0) {
+      if (deletedTrainers === 0) {
         res.status(404).json({ msg: "Trainer not found" });
         return;
       }

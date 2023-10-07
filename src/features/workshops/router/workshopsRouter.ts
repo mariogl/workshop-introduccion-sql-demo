@@ -1,15 +1,15 @@
 import { Router } from "express";
 import WorkShopController from "../controller/WorkshopsController.js";
 
-const trainersRouter = Router();
+const workshopsRouter = Router();
 
 const workshopsController = new WorkShopController();
 
-trainersRouter.get("/", workshopsController.getAll);
-trainersRouter.get("/:id", workshopsController.getById);
-trainersRouter.post("/", workshopsController.create);
-trainersRouter.put("/", workshopsController.update);
-trainersRouter.delete("/:id", workshopsController.delete);
-trainersRouter.get("/trainer/:id", workshopsController.getAllByTrainer);
+workshopsRouter.get("/", workshopsController.getAll);
+workshopsRouter.get("/:id", workshopsController.getById);
+workshopsRouter.post("/", workshopsController.create);
+workshopsRouter.put("/", workshopsController.update);
+workshopsRouter.delete("/:id", workshopsController.delete);
+workshopsRouter.get("/trainer/:id", workshopsController.getAllByTrainer);
 
-export default trainersRouter;
+export default workshopsRouter;
